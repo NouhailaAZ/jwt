@@ -99,14 +99,14 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterDto registerDto) {
         try{
-                if(userRepository.existsByUsername(registerDto.getUsername())){
-                    Map<String, Object> errorResponse = new HashMap<>();
-                        errorResponse.put("status", "error");
-                        errorResponse.put("message", "Le nom d'utilisateur est déjà pris");
-                        errorResponse.put("error", "USERNAME_ALREADY_EXISTS");
-                        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST); 
-                }
-            
+            if(userRepository.existsByUsername(registerDto.getUsername())){
+                Map<String, Object> errorResponse = new HashMap<>();
+                    errorResponse.put("status", "error");
+                    errorResponse.put("message", "Le nom d'utilisateur est déjà pris");
+                    errorResponse.put("error", "USERNAME_ALREADY_EXISTS");
+                    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+            }
+
             UserEntity user = new UserEntity();
             user.setUsername(registerDto.getUsername());
             user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
